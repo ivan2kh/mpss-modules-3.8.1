@@ -1981,7 +1981,7 @@ retry:
 			}
 		}
 
-		pinned_pages->nr_pages = get_user_pages(
+		pinned_pages->nr_pages = get_user_pages_remote(
 				current,
 				mm,
 				(uint64_t)addr,
@@ -2007,7 +2007,7 @@ retry:
 				/* Roll back any pinned pages */
 				for (i = 0; i < pinned_pages->nr_pages; i++) {
 					if (pinned_pages->pages[i])
-						page_cache_release(pinned_pages->pages[i]);
+						put_page(pinned_pages->pages[i]);
 				}
 				prot &= ~SCIF_PROT_WRITE;
 				try_upgrade = false;
